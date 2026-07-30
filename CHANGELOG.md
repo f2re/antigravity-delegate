@@ -1,5 +1,17 @@
 # История изменений
 
+## 0.2.0 — 2026-07-30
+
+- добавлена каноническая структура `skills/antigravity-delegate`;
+- добавлен Codex plugin manifest и repo marketplace;
+- добавлен нативный Antigravity plugin manifest;
+- профили Antigravity опубликованы в корневом каталоге `agents/`;
+- добавлена установка через `codex plugin marketplace`, `agy plugin install` и `npx skills add`;
+- установщик поддерживает Codex, Antigravity CLI и Antigravity IDE;
+- добавлены POSIX- и PowerShell-обёртки установщика;
+- добавлена проверка согласованности plugin-пакетов и compatibility-mirror;
+- документация переработана под штатные способы установки.
+
 ## 0.1.0 — 2026-07-30
 
 - первая рабочая версия Codex skill;

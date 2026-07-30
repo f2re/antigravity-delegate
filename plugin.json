@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "antigravity-delegate",
+  "description": "Безопасное делегирование ограниченных задач внешнему процессу Google Antigravity CLI с изоляцией через git worktree, очисткой окружения и проверяемым JSON-результатом."
+}

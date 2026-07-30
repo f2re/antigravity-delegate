@@ -1,0 +1,20 @@
+{
+  "name": "f2re-antigravity-delegate",
+  "interface": {
+    "displayName": "f2re · Antigravity Delegate"
+  },
+  "plugins": [
+    {
+      "name": "antigravity-delegate",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

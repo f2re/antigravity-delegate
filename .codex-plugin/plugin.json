@@ -1,0 +1,39 @@
+{
+  "name": "antigravity-delegate",
+  "version": "0.2.0",
+  "description": "Securely delegate bounded audits, research, testing, and isolated implementation tasks from Codex to Google Antigravity CLI.",
+  "author": {
+    "name": "f2re",
+    "url": "https://github.com/f2re"
+  },
+  "homepage": "https://github.com/f2re/antigravity-delegate#readme",
+  "repository": "https://github.com/f2re/antigravity-delegate",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "antigravity",
+    "delegation",
+    "subagent",
+    "security",
+    "worktree"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Antigravity Delegate",
+    "shortDescription": "Безопасное делегирование задач в Antigravity CLI",
+    "longDescription": "Codex сохраняет роль оркестратора, а Antigravity выполняет ограниченную задачу в отдельном git worktree и возвращает структурированный результат для обязательной проверки.",
+    "developerName": "f2re",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/f2re/antigravity-delegate",
+    "defaultPrompt": [
+      "Use Antigravity Delegate to obtain an independent read-only architecture review and verify every finding.",
+      "Use Antigravity Delegate to run a bounded security audit in an isolated worktree without exposing secrets.",
+      "Use Antigravity Delegate for an isolated implementation task, then inspect the full diff and run the project checks."
+    ],
+    "brandColor": "#5B5BD6"
+  }
+}

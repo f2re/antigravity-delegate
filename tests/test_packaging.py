@@ -16,7 +16,13 @@ INSTALLER_PATH = ROOT / "scripts" / "install_skill.py"
 
 
 def relative_files(root: Path) -> list[Path]:
-    return sorted(path.relative_to(root) for path in root.rglob("*") if path.is_file())
+    return sorted(
+        path.relative_to(root)
+        for path in root.rglob("*")
+        if path.is_file()
+        and "__pycache__" not in path.parts
+        and path.suffix not in {".pyc", ".pyo"}
+    )
 
 
 class PackagingTests(unittest.TestCase):

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Antigravity Delegate"
+  short_description: "Безопасное делегирование задач из Codex в Antigravity CLI"
+  default_prompt: "Делегируй подходящую часть задачи Antigravity, проверь его результат и представь только подтверждённые выводы."
+
+policy:
+  allow_implicit_invocation: true

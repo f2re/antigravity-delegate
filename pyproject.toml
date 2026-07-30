@@ -1,0 +1,19 @@
+[project]
+name = "antigravity-delegate"
+version = "0.1.0"
+description = "Безопасный Codex skill для делегирования задач Google Antigravity CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "f2re"}]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://github.com/f2re/antigravity-delegate"
+
+[tool.unittest]
+start-directory = "tests"

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "command(git status)",
+      "command(git diff)",
+      "command(git grep)",
+      "command(git log)",
+      "command(git show)",
+      "command(rg)"
+    ],
+    "deny": [
+      "command(git push)",
+      "command(git reset)",
+      "command(git clean)",
+      "command(rm)",
+      "command(sudo)",
+      "command(curl)",
+      "command(wget)",
+      "write_file(.git/)"
+    ]
+  }
+}

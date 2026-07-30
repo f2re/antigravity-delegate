@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Результат делегированной задачи Antigravity",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Краткий итог выполненной работы"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low", "info"]
+          },
+          "title": {"type": "string"},
+          "evidence": {"type": "string"},
+          "files": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "recommendation": {"type": "string"}
+        },
+        "required": ["severity", "title", "evidence", "files", "recommendation"]
+      }
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "tests": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "risks": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "next_steps": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "required": ["summary", "findings", "changed_files", "tests", "risks", "next_steps"]
+}

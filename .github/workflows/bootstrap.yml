@@ -1,0 +1,106 @@
+name: Bootstrap repository
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".bootstrap/**"
+      - ".github/workflows/bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Verify and extract source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64
+          import hashlib
+          import io
+          import tarfile
+          from pathlib import Path, PurePosixPath
+
+          root = Path.cwd().resolve()
+          payload_dir = root / ".bootstrap"
+          expected_names = [
+              "00.b64", "01.b64",
+              "02.b64", "02a.b64", "02b.b64", "02c.b64",
+              "03a.b64", "03b.b64",
+              "04a.b64", "04b.b64",
+              "05a.b64", "05b.b64",
+              "06a.b64", "06b.b64",
+              "07a.b64", "07b.b64",
+              "08a.b64", "08b.b64",
+          ]
+          actual_names = sorted(path.name for path in payload_dir.glob("*.b64"))
+          if actual_names != expected_names:
+              raise RuntimeError(
+                  f"Unexpected payload files: expected {expected_names}, got {actual_names}"
+              )
+
+          encoded = "".join(
+              (payload_dir / name).read_text(encoding="ascii").strip()
+              for name in expected_names
+          )
+          if len(encoded) != 35368:
+              raise RuntimeError(f"Unexpected Base64 length: {len(encoded)}")
+          encoded_hash = hashlib.sha256(encoded.encode("ascii")).hexdigest()
+          if encoded_hash != "e7a33d8f33bf56884e7a7ead45afc31b262583b6e19c92f144cd099d01f1bbbc":
+              raise RuntimeError(f"Base64 SHA-256 mismatch: {encoded_hash}")
+
+          archive_bytes = base64.b64decode(encoded, validate=True)
+          if len(archive_bytes) != 26525:
+              raise RuntimeError(f"Unexpected archive length: {len(archive_bytes)}")
+          archive_hash = hashlib.sha256(archive_bytes).hexdigest()
+          if archive_hash != "87cf2fb5e25056bd6d46bb477bbb35fe5ed1133f438e8fb7feb1e554ea1fa1c1":
+              raise RuntimeError(f"Archive SHA-256 mismatch: {archive_hash}")
+
+          with tarfile.open(fileobj=io.BytesIO(archive_bytes), mode="r:gz") as archive:
+              for member in archive.getmembers():
+                  member_path = PurePosixPath(member.name)
+                  if member_path.is_absolute() or ".." in member_path.parts:
+                      raise RuntimeError(f"Unsafe archive path: {member.name}")
+                  if not (member.isfile() or member.isdir()):
+                      raise RuntimeError(f"Unsupported archive member: {member.name}")
+                  target = (root / member.name).resolve()
+                  if target != root and root not in target.parents:
+                      raise RuntimeError(f"Archive path escapes repository: {member.name}")
+              archive.extractall(root, filter="data")
+          PY
+
+          rm -rf .bootstrap
+          rm -f .github/workflows/bootstrap.yml
+
+      - name: Compile Python sources
+        run: python -m compileall -q scripts skill tests
+
+      - name: Run test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Commit final repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "feat: implement secure Antigravity delegation skill"
+          git push origin HEAD:main
